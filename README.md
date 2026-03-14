@@ -47,29 +47,76 @@ The dataset is a NetCDF file containing an idealized ocean simulation with the f
 
 ---
 
-## Getting Started
+## Getting Started on Google Colab
 
-### 1. Install dependencies
-```bash
-pip install torch xarray numpy matplotlib
+All development is done on **Google Colab** using Google Drive as persistent storage. Follow these steps once before starting.
+
+### Step 1 — Download the dataset to your PC
+
+Click the link below to download the dataset (~5 GB):
+
+📦 [Download ocean_simulation_data_lite.nc](https://drive.google.com/file/d/13cdYCHNpf2Apgf4YGUGhfQmULbSoxAjn/view?usp=sharing)
+
+### Step 2 — Upload the dataset to your Google Drive
+
+1. Go to [drive.google.com](https://drive.google.com)
+2. Create a folder `YOUR_FOLDER` for the project
+3. Upload `ocean_simulation_data_lite.nc` into `YOUR_FOLDER`
+
+### Step 3 — Download the GitHub repo into the same Drive folder
+
+1. On this GitHub page click **Code → Download ZIP**
+2. Unzip it on your PC
+3. Upload the contents (`utils.py`, `notebook.ipynb`, etc.) into `YOUR_FOLDER`
+
+Your Drive folder should now look like:
+```
+My Drive / YOUR_FOLDER /
+├── utils.py
+├── notebook.ipynb
+└── ocean_simulation_data_lite.nc
 ```
 
-### 2. Explore the data
-```python
-from utils import plot_ocean_temperature, plot_salinity_velocity, plot_amoc
+### Step 4 — Open the notebook from Drive
 
-plot_ocean_temperature("ocean_simulation_data_lite.nc")
-plot_salinity_velocity("ocean_simulation_data_lite.nc")
-plot_amoc("ocean_simulation_data_lite.nc")
-```
+1. Go to [drive.google.com](https://drive.google.com)
+2. Navigate to `YOUR_FOLDER`
+3. Double-click `notebook.ipynb` — it opens directly in Colab
 
-### 3. Load and split the dataset
+### Step 5 — Mount Drive and set your folder path
+
+At the top of the notebook, run:
 ```python
+from google.colab import drive
+drive.mount('/content/drive')
+
+# ← replace YOUR_FOLDER with your actual folder path
+FOLDER = "/content/drive/MyDrive/YOUR_FOLDER"
+
+import sys, os
+sys.path.append(FOLDER)
+%cd {FOLDER}
+
+from utils import *
 import xarray as xr
-from torch.utils.data import DataLoader, Subset
-from utils import OceanDataset
 
 ds = xr.open_dataset("ocean_simulation_data_lite.nc")
+```
+
+> **Only `FOLDER` needs to be changed.** On every new Colab session, just re-run this cell — Drive remounts in seconds and all your files are still there.
+
+**Save checkpoints to Drive** so they persist across sessions:
+```python
+import torch
+torch.save(model.state_dict(), "checkpoint.pt")
+```
+
+---
+
+## Dataset Loading
+```python
+from torch.utils.data import DataLoader, Subset
+
 dataset = OceanDataset(ds, input_steps=1, target_steps=5, normalize=True)
 
 n_total = len(dataset)
@@ -85,6 +132,13 @@ train_loader = DataLoader(train_ds, batch_size=8, shuffle=True)
 val_loader   = DataLoader(val_ds,   batch_size=8, shuffle=False)
 test_loader  = DataLoader(test_ds,  batch_size=8, shuffle=False)
 ```
+
+> **Memory tip:** If Colab crashes when loading the dataset, switch to `OceanDatasetLazy` which reads from disk per sample and avoids loading everything into RAM:
+> ```python
+> dataset = OceanDatasetLazy(data_file, input_steps=1, target_steps=5, normalize=True)
+> ```
+**Note:** You might need to experiment with the number of data points used to compute the statistics for normalisation, as this step still requires the full dataset.
+
 
 Each batch contains:
 
@@ -136,8 +190,6 @@ The main notebook `notebook.ipynb` is structured as follows:
 
 ## Workflow
 
-This project is split into two phases:
-
 ### 🔬 Phase 1 — Development on Google Colab (Lite Dataset)
 
 All development and prototyping is done on **Google Colab** using the lite dataset `ocean_simulation_data_lite.nc`, which is a reduced version of the full simulation designed to fit within Colab's memory and runtime constraints.
@@ -148,8 +200,6 @@ The goals of this phase are:
 - Validate the training loop and autoregressive rollout
 - Run quick experiments on model design choices
 
-> **Tip:** Use `OceanDatasetLazy` if you run into memory issues on Colab — it loads only the timesteps needed for each sample rather than the full dataset at once.
-
 ### 🚀 Phase 2 — Training on the Full Dataset (Server)
 
-Once your code is validated on the lite dataset, we will discuss scaling up training to the **full dataset** on a dedicated server.
+Once your code is validated on the lite dataset, we will discuss scaling up training to the **full dataset** on a dedicated server. The full dataset is significantly larger (~160 GB) so `OceanDatasetLazy` will be used instead of `OceanDataset`.
