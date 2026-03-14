@@ -131,3 +131,25 @@ The main notebook `notebook.ipynb` is structured as follows:
 4. **Training / Validation loop** — train the emulator and monitor validation loss
 5. **Test set evaluation** — evaluate on held-out data
 6. **Autoregressive rollout** — run the emulator autoregressively and assess stability
+
+---
+
+## Workflow
+
+This project is split into two phases:
+
+### 🔬 Phase 1 — Development on Google Colab (Lite Dataset)
+
+All development and prototyping is done on **Google Colab** using the lite dataset `ocean_simulation_data_lite.nc`, which is a reduced version of the full simulation designed to fit within Colab's memory and runtime constraints.
+
+The goals of this phase are:
+- Explore the dataset and understand the variables
+- Build and debug your emulator architecture
+- Validate the training loop and autoregressive rollout
+- Run quick experiments on model design choices
+
+> **Tip:** Use `OceanDatasetLazy` if you run into memory issues on Colab — it loads only the timesteps needed for each sample rather than the full dataset at once.
+
+### 🚀 Phase 2 — Training on the Full Dataset (Server)
+
+Once your code is validated on the lite dataset, we will discuss scaling up training to the **full dataset** on a dedicated server.
