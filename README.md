@@ -90,22 +90,14 @@ At the top of the notebook, run:
 from google.colab import drive
 drive.mount('/content/drive')
 
-# ← replace YOUR_FOLDER with your actual folder path
 FOLDER = "/content/drive/MyDrive/YOUR_FOLDER"
 
-import sys, os
-sys.path.append(FOLDER)
 %cd {FOLDER}
-
-from utils import *
-import xarray as xr
-
-ds = xr.open_dataset("ocean_simulation_data_lite.nc")
 ```
 
 > **Only `FOLDER` needs to be changed.** On every new Colab session, just re-run this cell — Drive remounts in seconds and all your files are still there.
 
-**Save checkpoints to Drive** so they persist across sessions:
+**Save checkpoints to Drive in training** so they persist across sessions:
 ```python
 import torch
 torch.save(model.state_dict(), "checkpoint.pt")
