@@ -434,8 +434,8 @@ def plot_amoc(file_path):
     time_days = ds['Time'].astype('float64') / (1e9 * 60 * 60 * 24)
 
     # 2. Let's find the Atlantic center at 26.5N
-    # We'll take a wider slice to be safe: 200 to 360 (spanning the whole Atlantic)
-    v_section = ds['v'].sel(yt=26.5, method='nearest').sel(xt=slice(200, 360))
+    # We'll take a wider slice to be safe: 280 to 350 (spanning the whole Atlantic)
+    v_section = ds['v'].sel(yt=26.5, method='nearest').sel(xt=slice(280, 350))
     v_section = v_section.fillna(0.0)
 
     # 3. Zonal Integration Math
