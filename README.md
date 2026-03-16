@@ -12,9 +12,8 @@ An emulator is a neural network trained to mimic the time evolution of the ocean
 
 ## Recommended Reading
 
-- [Pathak et al. 2021 — FourCastNet](https://arxiv.org/pdf/2110.02085)
-- [Beucler et al. 2024 — Hybrid ocean modelling](https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/2024GL114318)
-- [Brajard et al. 2022 — Machine learning for ocean modelling](https://linkinghub.elsevier.com/retrieve/pii/S1463500322000890)
+- [Dheeshjith et al. 2025 — Hybrid ocean modelling](https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/2024GL114318)
+- [Ronneberger et al. 2022 — UNET model](https://arxiv.org/pdf/1505.04597)
 
 ---
 
