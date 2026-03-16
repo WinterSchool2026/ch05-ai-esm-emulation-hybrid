@@ -149,20 +149,20 @@ Each batch contains:
 
 Your emulator will be evaluated on four axes:
 
-### ⚡ 1. Speed — How many Simulated Years Per Day (SYPD)?
+### 1. Speed — How many Simulated Years Per Day (SYPD)?
 Train your emulator and measure how many years of ocean simulation it can produce per wall-clock day. Compare this to the reference numerical model.
 
-### 📈 2. Stability & Long-term Variability
+### 2. Stability & Long-term Variability
 Run the emulator autoregressively over long timescales. Use the provided plotting functions to check:
 - Climatological SST and SSS
 - Zonal mean stratification
 - AMOC index time series
 
-### 🌍 3. Generalization to Different Forcing Conditions
-Evaluate your trained emulator on `ocean_simulation_generalization.nc`, which contains a simulation run under different atmospheric forcing conditions not seen during training.
+### 3. Generalization to Different Forcing Conditions
+Does the emulator generalize to different forcing conditions?
 
-### 🎲 4. Ensemble Generation
-Propose a methodology to generate an ensemble of trajectories from your emulator (e.g. perturbations of initial conditions, stochastic components) and evaluate the ensemble spread.
+### 4. Ensemble Generation
+Is the emulator able to generate ensembles (different initial conditions, model configurations, forcings). Evaluate the spread of the generated ensembles.
 
 ---
 
